@@ -1,5 +1,5 @@
 const toDoStatus = "To Do";
-const InProgressStatus = "In Progress";
+const inProgressStatus = "In Progress";
 const doneStatus = "Done";
 
 const list = [
@@ -10,11 +10,8 @@ const list = [
 ]
 
 function changeStatus(currentTask, newStatus) {
-    list.forEach(elem => {
-        if (elem.task === currentTask) {
-            elem.status = newStatus;
-        }
-    })
+    let targetItem = list.find(elem => elem.task === currentTask);
+    targetItem.status = newStatus;
 }
 
 
@@ -28,53 +25,35 @@ function addTask(newTask, defaultStatus = toDoStatus, defaultPriority = 'low') {
 
 
 function deleteTask(currentTask) {
-    for (let i = 0; i < list.length; i++) {
-        if (list[i].task === currentTask) {
-            list.splice(i, 1);
-        }
-    }
+    let currentIndex = list.findIndex(elem => elem.task === currentTask);
+    list.splice(currentIndex, 1);
 }
 
 
 function showList() {
-    let toDoTasks = "";
-    let inProgressTasks = "";
-    let doneTasks = "";
+    let toDoTasks = list.filter(elem => elem.status === toDoStatus);
+    let inProgressTasks = list.filter(elem => elem.status === inProgressStatus);
+    let doneTasks = list.filter(elem => elem.status === doneStatus);
 
-    list.forEach(elem => {
-        let currentStatus = elem.status;
-        
-        switch(currentStatus) {
-            case toDoStatus:
-                toDoTasks += `\n${elem.task}`;
-                break;
-
-            case InProgressStatus:
-                inProgressTasks += `\n${elem.task}`;
-                break;
-
-            case doneStatus:
-                doneTasks += `\n${elem.task}`;
-                break;
-        }
-    })
-
-    if (toDoTasks) {
-        console.log(`\n${toDoStatus}: ${toDoTasks}`)
+    console.log(`\n${toDoStatus}:`)
+    if (toDoTasks.length > 0) {
+        toDoTasks.forEach(toDoTask => console.log(`   ${toDoTask.task}`))
     } else {
-        console.log(`\n${toDoStatus}: \n-`)
+        console.log(`   -`)
     }
 
-    if (inProgressTasks) {
-        console.log(`\n${InProgressStatus}: ${inProgressTasks}`)
+    console.log(`\n${inProgressStatus}:`)
+    if (inProgressTasks.length > 0) {
+        inProgressTasks.forEach(inProgressTask => console.log(`   ${inProgressTask.task}`))
     } else {
-        console.log(`\n${InProgressStatus}:  \n-`)
+        console.log(`   -`)
     }
 
-    if (doneTasks) {
-        console.log(`\n${doneStatus}: ${doneTasks}`)
+    console.log(`\n${doneStatus}:`);
+    if (doneTasks.length > 0) {
+        doneTasks.forEach(doneTask => console.log(`   ${doneTask.task}`))
     } else {
-        console.log(`\n${doneStatus}:  \n-`)
+        console.log(`   -`)
     }
 }
 
